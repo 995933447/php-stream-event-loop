@@ -1,0 +1,21 @@
+{
+    "name": "bobby/stream-event-loop",
+    "description": "stream函数开发的异步非阻塞IO事件循环组件",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "bobby",
+            "email": "995933447@qq.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Bobby\\StreamEventLoop\\": "src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {
+      "ext-pcntl": "*"
+    }
+}
