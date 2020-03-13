@@ -4,8 +4,7 @@ require __DIR__ . "/../vendor/autoload.php";
 use Bobby\StreamEventLoop\LoopContract as Loop;
 use Bobby\StreamEventLoop\LoopFactory;
 
-$loop = LoopFactory::make(LoopFactory::SELECT_LOOP);
-//$loop = LoopFactory::make();
+$loop = LoopFactory::make();
 
 if ($loop instanceof \Bobby\StreamEventLoop\Select\Loop) {
     echo "Select event loop\n";
