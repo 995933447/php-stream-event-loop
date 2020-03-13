@@ -16,7 +16,7 @@ $seeds = [
     'www.taobao.com'
 ];
 
-$loop = LoopFactory::make(LoopFactory::EPOLL_LOOP);
+$loop = LoopFactory::make();
 
 foreach ($seeds as $seed) {
     if (!$resource = fsockopen($seed, 80, $errno, $errstr)) {
