@@ -16,7 +16,8 @@ $seeds = [
     'www.taobao.com'
 ];
 
-$loop = LoopFactory::make();
+// 如果指定epoll模式 需要装event扩展
+$loop = LoopFactory::make(LoopFactory::EPOLL_LOOP);
 
 foreach ($seeds as $seed) {
     if (!$resource = fsockopen($seed, 80, $errno, $errstr)) {
