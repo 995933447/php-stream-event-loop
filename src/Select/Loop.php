@@ -22,11 +22,11 @@ class Loop extends LoopContract
             list($readyReadStreams, $readyWriteStreams) = $this->getStreamEventContainer()->toArray();
 
             if (
-                empty($readyReadStreams)
-                && empty($readyWriteStreams)
-                && $this->getTimerQueue()->isEmpty()
-                && $this->getSignalArtisan()->isEmpty()
-                && $this->getExecutorWhenWaitingQueue()->isEmpty()
+                $this->isEmptyReadyReadStream()
+                && $this->isEmptyReadyWriteStream()
+                && $this->isEmptyTimer()
+                && $this->isEmptySignals()
+                && $this->isEmptyWhenWaiting()
             ) {
                 $this->stop();
                 continue;
@@ -150,5 +150,38 @@ class Loop extends LoopContract
         }
 
         return $this->timerQueue;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isEmptyReadyReadStream(): bool
+    {
+        return empty($readyReadStreams);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isEmptyReadyWriteStream(): bool
+    {
+        return empty($readyWriteStreams);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isEmptyTimer(): bool
+    {
+        return $this->getTimerQueue()->isEmpty();
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function isEmptySignals(): bool
+    {
+        return $this->getSignalArtisan()->isEmpty();
     }
 }

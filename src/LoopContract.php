@@ -48,7 +48,7 @@ abstract class LoopContract
         }
     }
 
-    /**当没有事件准备好时,利用闲置事件执行额外任务
+    /**当没有事件准备好时,利用闲置时间执行额外任务
      * @param callable $callback
      * @return mixed
      */
@@ -63,6 +63,14 @@ abstract class LoopContract
             $this->executorWhenWaitingQueue = new ExecutorWhenWaitingQueue($this);
         }
         return $this->executorWhenWaitingQueue;
+    }
+
+    /** 检测是否存在利用闲置时间额外执行的任务
+     * @return bool
+     */
+    public function isEmptyWhenWaiting(): bool
+    {
+        return $this->getExecutorWhenWaitingQueue()->isEmpty();
     }
 
     /**添加要添加的事件循环的资源流
@@ -122,4 +130,24 @@ abstract class LoopContract
      * @return mixed
      */
     abstract public function stop();
+
+    /**检查是否存在准备可读事件流
+     * @return bool
+     */
+    abstract public function isEmptyReadyReadStream(): bool;
+
+    /**检测是否存在准备可写事件流
+     * @return bool
+     */
+    abstract public function isEmptyReadyWriteStream(): bool;
+
+    /**检测是否存在持续定时器
+     * @return bool
+     */
+    abstract public function isEmptyTimer(): bool;
+
+    /**检测是否存在已安装的信号处理器
+     * @return bool
+     */
+    abstract public function isEmptySignals(): bool;
 }

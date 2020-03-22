@@ -48,7 +48,7 @@ class Loop extends LoopContract
 
             $this->emitOnCycleEnd();
 
-            if ($this->getExecutorWhenWaitingQueue()->isEmpty() && $this->isEmptyEvents()) {
+            if ($this->isEmptyWhenWaiting() && $this->isEmptyEvents()) {
                 $this->stop();
             }
         }
@@ -56,7 +56,7 @@ class Loop extends LoopContract
 
     protected function isEmptyEvents(): bool
     {
-        return empty($this->streamEvents) && empty($this->signals) && empty($this->timers);
+        return $this->isEmptyReadyWriteStream() && $this->isEmptyReadyWriteStream() && $this->isEmptySignals() && $this->isEmptyTimer();
     }
 
     public function stop()
@@ -221,5 +221,49 @@ class Loop extends LoopContract
             $this->timers[$timerId]->free();
             unset($this->timers[$timerId]);
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isEmptyReadyReadStream(): bool
+    {
+        foreach ($this->streamEvents as $streamEvent) {
+            if ($streamEvent->isReadable) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isEmptyReadyWriteStream(): bool
+    {
+        foreach ($this->streamEvents as $streamEvent) {
+            if ($streamEvent->isWritable) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isEmptySignals(): bool
+    {
+        return empty($this->signals);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isEmptyTimer(): bool
+    {
+        return empty($this->timers);
     }
 }

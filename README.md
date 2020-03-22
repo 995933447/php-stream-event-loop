@@ -245,3 +245,15 @@ function (int $timerId, \Bobby\StreamEventLoop\LoopContract $loop) {...}\
 
 #### Bobby\StreamEventLoop\LoopContract::onCycleEnd($callback)
 一轮事件循环之后会触发该回调函数。null代表取消回调事件。
+
+#### Bobby\StreamEventLoop\LoopContract::isEmptyReadyReadStream(): bool
+检查是否存在准备可读事件流
+
+#### Bobby\StreamEventLoop\LoopContract::isEmptyReadyWriteStream(): bool
+检查是否存在准备可写事件流
+
+#### Bobby\StreamEventLoop\LoopContract::isEmptyTimer(): bool
+检测是否存在持续定时器
+
+#### Bobby\StreamEventLoop\LoopContract::isEmptySignals(): bool
+检测是否存在已安装的信号处理器
