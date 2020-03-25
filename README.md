@@ -195,18 +195,18 @@ $loop->addLoopStream(\Bobby\StreamEventLoop\LoopContract::READ_EVENT, $fp, funct
 * **$callback** 信号处理回调。当信号发送时将触发该回调
 
 #### Bobby\StreamEventLoop\LoopContract::removeSignal(int $signalNo)
-取消已在时间循环中安装的信号处理器\
+取消已在事件循环中安装的信号处理器\
 参数:
 * **$signalNo** 信号
 
 #### Bobby\StreamEventLoop\LoopContract::addTick(float $interval, callable $callback): int
-在时间循环中添加持续定时器(毫秒级)，返回定时器ID。相当于js的setInterval函数\
+在事件循环中添加持续定时器(毫秒级)，返回定时器ID。相当于js的setInterval函数\
 参数:
 * **$interval** 触发秒数间隔，传入小数可精确到毫秒。
 * **$callback** 定时器触发时执行的回调。
 
 #### Bobby\StreamEventLoop\LoopContract::addAfter(float $interval, callable $callback): int
-在时间循环中添加一次性执行定时器(毫秒级)，返回定时器ID。和addTick不同的是该定时只执行一次之后便会失效。相当于js的setTimeout函数\
+在事件循环中添加一次性执行定时器(毫秒级)，返回定时器ID。和addTick不同的是该定时只执行一次之后便会失效。相当于js的setTimeout函数\
 参数:
 * **$interval** 触发秒数间隔，传入小数可精确到毫秒。
 * **$callback** 定时器触发时执行的回调。Loop实例将自动注入定时器ID,Loop实例自身到函数参数中供函数使用，如下所示:
@@ -235,7 +235,7 @@ function (int $timerId, \Bobby\StreamEventLoop\LoopContract $loop) {...}\
 ````
 
 #### Bobby\StreamEventLoop\LoopContract::poll()
-开始事件循环。将阻塞执行事件循环直至时间循环中没有要监听的事件(包括流事件,信号处理器以及定时器事件)。
+开始事件循环。将阻塞执行事件循环直至事件循环中没有要监听的事件(包括流事件,信号处理器以及定时器事件)。
 
 #### Bobby\StreamEventLoop\LoopContract::stop()
 暂停事件循环并退出阻塞。
