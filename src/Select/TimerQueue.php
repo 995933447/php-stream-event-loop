@@ -5,7 +5,7 @@ use SplPriorityQueue;
 
 class TimerQueue extends SplPriorityQueue
 {
-    protected $minInterval;
+    protected $minTimeout;
 
     protected $poppedTimers = [];
 
@@ -18,9 +18,9 @@ class TimerQueue extends SplPriorityQueue
         $this->loop = $loop;
     }
 
-    public function getMinInterval(): ?float
+    public function getMinTimeout(): ?float
     {
-        return $this->minInterval;
+        return $this->minTimeout;
     }
 
     public function addTick(float $seconds, callable $callback): int
@@ -50,21 +50,21 @@ class TimerQueue extends SplPriorityQueue
 
     protected function insertTimer(Timer $timer)
     {
-        $this->insert($timer, -1 * $timer->interval);
-        $this->resetMinInterVal();
+        $this->insert($timer, -1 * $timer->timeout);
+        $this->resetMinTimeout();
     }
 
-    protected function resetMinInterVal()
+    protected function resetMinTimeout()
     {
         if ($this->isEmpty()) {
-            if (!is_null($this->minInterval)) {
-                $this->minInterval = null;
+            if (!is_null($this->minTimeout)) {
+                $this->minTimeout = null;
             }
             return;
         }
 
         $this->setExtractFlags(SplPriorityQueue::EXTR_PRIORITY);
-        $this->minInterval = -1 * $this->top();
+        $this->minTimeout = -1 * $this->top();
     }
 
     public function pop(bool $needRecycle = true): ?Timer
@@ -81,7 +81,7 @@ class TimerQueue extends SplPriorityQueue
             $this->poppedTimers[] = $timer;
         }
 
-        $this->resetMinInterVal();
+        $this->resetMinTimeout();
 
         return $timer;
     }
@@ -107,7 +107,7 @@ class TimerQueue extends SplPriorityQueue
         while ($timersNum--) {
             $timer = $this->pop(false);
             if ($timer->timerId == $timerId) {
-                $this->resetMinInterVal();
+                $this->resetMinTimeout();
                 break;
             }
             $poppedTimers[] = $timer;

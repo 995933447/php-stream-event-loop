@@ -36,13 +36,17 @@ class Loop extends LoopContract
 
             $minTimerTimeout = null;
             if (!$this->getTimerQueue()->isEmpty()) {
-                $minTimerTimeout = microtime(true) + $this->getTimerQueue()->getMinInterval();
+                $minTimerTimeout = $this->getTimerQueue()->getMinTimeout();
             }
 
             $selectTimeout = null;
             if ($this->getExecutorWhenWaitingQueue()->isEmpty()) {
                 if (!is_null($minTimerTimeout)) {
-                    $selectTimeout = $this->getTimerQueue()->getMinInterval() * 1000000;
+                    if ($minTimerTimeout > microtime(true)) {
+                        $selectTimeout = ($minTimerTimeout - microtime(true)) * 1000000;
+                    } else {
+                        $selectTimeout = 0;
+                    }
                 }
             } else {
                 $selectTimeout = 0;
